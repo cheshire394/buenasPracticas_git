@@ -28,16 +28,21 @@ No se despliega en producción directamente.
 Son númerosas ramas que desarrollan un tarea en concreto. 
 Cuando esa parte del código está implementada debe de fusionarse con la rama Developer.
 
+
+
+
 ![image](https://github.com/user-attachments/assets/4697b9a4-cb29-4fd9-b1c6-7aba6b414fd2)
+
+
 
 
 ⚠️ Advertencia: 
 
 Siempre antes de hacer push (subir tus cambios a remoto), haz pull (descargas los cambios en remoto) y 
-soluciona los conflictos 
+soluciona los conflictos en el caso de que los hubiera.
 
 
-**Flujo de trabajo típico en Git Flow**
+**FLUJO DE TRABAJO**
 
 Desarrollo de nuevas funcionalidades en ramas feature/*.
 
@@ -51,8 +56,9 @@ Fusión de release en main y etiquetado con un número de versión (v1.0.0, v1.1
 
 Fusión de release en develop para mantener las correcciones en futuras versiones.
 
+
  
-##Ejemplo práctico
+**EJEMPLO PRÁCTICO**
 
 Deseas añadir una nueva función a una aplicación que ha sido previamente desplegada en un servidor.
 
@@ -106,7 +112,49 @@ git branch -d feature/nueva-funcionalidad
 
 ```
 
+Si además existe en remoto:
+```
+git push origin --delete feature
+```
 
+**En la rama developer:**
+
+✅  Realiza pruebas unitarias (testeo)
+
+❌  Confirma que no haya errores ni conflictos en el código.
+
+🪲 Si hay bugs o mejoras pendientes, corrígelos antes de pasar a release.
+
+⚙️ Antes de mover el código a release, deben ejecutarse pruebas de integración para garantizar que las funcionalidades trabajadas en developer funcionan correctamente juntas.
+
+
+
+## 🚀 Crear y fusionar developer en release
+Cuando **developer** esté estable y validada, se crea la rama **release** si no existe:
+
+```sh
+git checkout -b release
+```
+
+Si la rama **release** ya existe y se está preparando una nueva versión, fusiona los cambios desde **developer**:
+
+```sh
+git checkout release
+git merge developer
+```
+
+Luego, sube los cambios al repositorio remoto:
+
+```sh
+git push origin release
+```
+
+---
+
+## 🔍 Realizar pruebas finales en release
+En esta etapa, los testers revisan la rama **release** en un entorno de pre-producción. Aquí se busca detectar errores antes de la fusión en **main**.
+
+Si se encuentran errores, pueden corregirse directamente en la rama **release**, o bien realizar los cambios en **developer** y luego volver a fusionarlos.
 
 
 
