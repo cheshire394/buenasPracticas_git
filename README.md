@@ -1,121 +1,83 @@
-# buenasPracticas_git
+# 🚀 Buenas Prácticas en Git
 
-Este readme permite constituir una guía de buenas prácticas a la hora de desarrollar un proyecto en equipo utilizando git.
+Este **README** constituye una guía de buenas prácticas para desarrollar proyectos en equipo utilizando **Git**.
 
-Todo proyecto de desarrollo de software debe de tener como mínimo 4 ramas de desarrollo. 
+---
 
-**Rama Main/Master** 
+## 🌱 Estructura de Ramas
+Todo proyecto de desarrollo de software debe tener como mínimo **4 ramas principales**:
+---
 
-Es la rama del proyecto en producción, y es la rama más delicada del proyecto, ya que toda acción 
-sobre esta rama afecta directamente al cliente. 
+![image](https://github.com/user-attachments/assets/7ac7942d-4fda-4fd5-bceb-1b0fed8aaa55)
 
-**Rama Release**
+---
+### 🔹 `main` / `master`
+📌 **Producción** | 🚀 **Versión estable**
+- Es la rama más delicada porque impacta directamente al cliente.
+- Solo recibe cambios cuando se libera una nueva versión estable.
 
-Se crea a partir de develop cuando se prepara una nueva versión para producción.
-Permite realizar pruebas y corregir errores antes de lanzar la versión final.
-Se usa para estabilizar el código antes de que pase a la rama main o master.
-Una vez que la versión está lista, los cambios se fusionan en main y también en develop (para asegurar que las correcciones no se pierdan en futuras versiones).
+### 🔹 `release`
+🛠 **Preparación de versión** | 🔍 **Pruebas previas**
+- Se crea a partir de `develop` cuando se prepara una nueva versión para producción.
+- Permite realizar pruebas y corregir errores antes del lanzamiento.
+- Una vez aprobada, se fusiona en `main` y `develop`.
 
- **Rama Developer**
- 
-Es la rama donde se integran los cambios de las características en desarrollo.
-Aquí se fusionan las ramas de funcionalidad (feature) una vez que los desarrolladores completan una nueva funcionalidad.
-Puede considerarse una versión intermedia e inestable del software.
-No se despliega en producción directamente.
+### 🔹 `develop`
+🧪 **Desarrollo principal** | ⚡ **Integración de cambios**
+- Se fusionan las funcionalidades (`feature/*`) una vez completadas.
+- Es una versión intermedia e inestable.
+- No se despliega en producción directamente.
 
-**Rama Feature**
+### 🔹 `feature/*`
+✨ **Nuevas funcionalidades** | 🔄 **Trabajo en equipo**
+- Son ramas individuales para cada tarea o mejora.
+- Una vez terminadas, se fusionan en `develop`.
 
-Son númerosas ramas que desarrollan un tarea en concreto. 
-Cuando esa parte del código está implementada debe de fusionarse con la rama Developer.
+---
 
-
-
-
-![image](https://github.com/user-attachments/assets/4697b9a4-cb29-4fd9-b1c6-7aba6b414fd2)
-
-
-
-
-⚠️ Advertencia: 
-
-Siempre antes de hacer push (subir tus cambios a remoto), haz pull (descargas los cambios en remoto) y 
-soluciona los conflictos en el caso de que los hubiera.
+## ⚠️ Reglas Clave
+🚨 **Antes de hacer `push` (subir cambios), haz `pull` (descargar cambios) y resuelve conflictos.**
 
 
-**FLUJO DE TRABAJO**
-
-Desarrollo de nuevas funcionalidades en ramas feature/*.
-
-Integración en develop cuando una funcionalidad está completa.
-
-Creación de una release/* cuando se prepara una nueva versión.
-
-Corrección de errores en la rama release, sin añadir nuevas características.
-
-Fusión de release en main y etiquetado con un número de versión (v1.0.0, v1.1.0, etc.).
-
-Fusión de release en develop para mantener las correcciones en futuras versiones.
 
 
- 
-**EJEMPLO PRÁCTICO**
 
-Deseas añadir una nueva función a una aplicación que ha sido previamente desplegada en un servidor.
 
-1️⃣ Crear la nueva rama feature basada en developer:
+---
 
-En primer lugar debemos desplazarnos a la rama developer con el comando checkout
+## 🔄 Flujo de Trabajo comienza en la rama feature
 
-```
-git checkout developer
+1️⃣ **Crear una rama `feature/*` desde `develop`**
+```sh
+git checkout develop #ubicarse en la rama develop
+git pull origin develop #descargar los cambios remotos
+git checkout -b feature/nueva-funcionalidad # añadir una nueva rama y moverte hacía ella
 ```
 
-debemos hacer pull para actualizar los cambios que haya el repositorio remoto.
-
-```
-git pull origin developer
-```
-
- cambiamos de rama y la creamos al mismo tiempo.
-
-```
-git checkout -b feature/nueva-funcionalidad
-```
-
-2️⃣ Trabajar en la funcionalidad y hacer commits en feature
-```
+2️⃣ **Trabajar en la funcionalidad y hacer commits**
+```sh
 git add .
 git commit -m "Implementación de nueva funcionalidad"
 ```
 
-3️⃣ Mantener la rama feature actualizada
-En lugar de hacer un merge, es mejor hacer **rebase de developer en feature** para evitar commits innecesarios y mantener el historial limpio:
-
-```
-git checkout developer
-git pull origin developer  # Asegurar que tienes la última versión
-git checkout feature/nueva-funcionalidad
-git rebase developer
-
-```
-4️⃣ Fusionar feature en developer cuando esté lista
-
-```
-git checkout developer
+3️⃣ **Fusionar `feature/*` en `develop` cuando esté lista**
+```sh
+git checkout develop
+git pull origin develop
 git merge feature/nueva-funcionalidad
-git push origin developer
+git push origin develop
 ```
-✅ Se recomienda eliminar la rama feature después del merge si ya no es necesaria:
-
-```
+✅ **Eliminar la rama `feature/*` si ya no es necesaria:**
+```sh
 git branch -d feature/nueva-funcionalidad
-
+git push origin --delete feature/nueva-funcionalidad #elimina en el repositorio remoto
 ```
 
-Si además existe en remoto:
-```
-git push origin --delete feature
-```
+---
+
+
+
+## 🚀 Crear y fusionar `developer` en `release`
 
 **En la rama developer:**
 
@@ -128,44 +90,28 @@ git push origin --delete feature
 ⚙️ Antes de mover el código a release, deben ejecutarse pruebas de integración para garantizar que las funcionalidades trabajadas en developer funcionan correctamente juntas.
 
 
-
-## 🚀 Crear y fusionar developer en release
-Cuando **developer** esté estable y validada, se crea la rama **release** si no existe:
-
+Cuando `developer` esté estable y validada, se crea la rama `release` si no existe:
 ```sh
 git checkout -b release
 ```
 
-Si la rama **release** ya existe y se está preparando una nueva versión, fusiona los cambios desde **developer**:
-
+Si `release` ya existe, fusiona los cambios desde `developer`:
 ```sh
 git checkout release
 git merge developer
 ```
 
-Luego, sube los cambios al repositorio remoto:
-
+Sube los cambios al repositorio remoto:
 ```sh
 git push origin release
 ```
 
+
 ---
 
-## 🔍 Realizar pruebas finales en release
-En esta etapa, los testers revisan la rama **release** en un entorno de pre-producción. Aquí se busca detectar errores antes de la fusión en **main**.
+## 🔍 Pruebas finales en `release`
+En esta etapa, los testers revisan `release` en un entorno de pre-producción.
+Si hay errores, se corrigen en `release` o en `developer` y se vuelve a fusionar.
 
-Si se encuentran errores, pueden corregirse directamente en la rama **release**, o bien realizar los cambios en **developer** y luego volver a fusionarlos.
-
-
-
-
-
-
-
-
-
-
-
-
-
+---
 
