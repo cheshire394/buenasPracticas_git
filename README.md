@@ -62,10 +62,10 @@ git commit -m "Implementación de nueva funcionalidad"
 
 3️⃣ **Fusionar `feature/*` en `develop` cuando esté lista**
 ```sh
-git checkout develop
-git pull origin develop
-git merge feature/nueva-funcionalidad
-git push origin develop
+git checkout develop #cambiar a la rama developer
+git pull origin develop #descargar los cambios remotos
+git merge feature/nueva-funcionalidad #fusionar las ramas  y arreglar conflictos si los hubiera
+git push origin develop #subir los cambios a remoto
 ```
 ✅ **Eliminar la rama `feature/*` si ya no es necesaria:**
 ```sh
@@ -97,13 +97,14 @@ git checkout -b release
 
 Si `release` ya existe, fusiona los cambios desde `developer`:
 ```sh
-git checkout release
-git merge developer
+git checkout release #movernos a la rama release
+git pull release ## descargas los cambios remotos
+git merge developer ## fusionar las ramas y resolver conflictos si los hubiera
 ```
 
 Sube los cambios al repositorio remoto:
 ```sh
-git push origin release
+git push origin release 
 ```
 
 
